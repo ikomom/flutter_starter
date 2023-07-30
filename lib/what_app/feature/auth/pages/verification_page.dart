@@ -1,10 +1,19 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_starter/what_app/common/routes/routes.dart';
 import 'package:flutter_starter/what_app/common/widgets/custom_icon_button.dart';
 import 'package:flutter_starter/what_app/common/extension/custom_theme_extension.dart';
 import 'package:flutter_starter/what_app/feature/auth/widgets/custom_text_field.dart';
 
 class VerificationPage extends StatefulWidget {
-  const VerificationPage({super.key});
+  const VerificationPage({
+    super.key,
+    required this.verificationId,
+    required this.phoneNumber,
+  });
+
+  final String verificationId;
+  final String phoneNumber;
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
@@ -60,11 +69,14 @@ class _VerificationPageState extends State<VerificationPage> {
                       text: "You've tried to register +25092323321. before requesting an SMS or call with your code\n",
                     ),
                     TextSpan(
-                      text: 'Wrong number?',
-                      style: TextStyle(
-                        color: context.theme.blueColor,
-                      ),
-                    ),
+                        text: 'Wrong number?',
+                        style: TextStyle(
+                          color: context.theme.blueColor,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Routes.pop(context);
+                          }),
                   ],
                 ),
               ),
@@ -78,7 +90,11 @@ class _VerificationPageState extends State<VerificationPage> {
                 fontSize: 30,
                 autoFocus: true,
                 keyboardType: TextInputType.number,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  if (value.length == 6) {
+                    Routes.push(context, Routes.userInfo);
+                  }
+                },
               ),
             ),
             const SizedBox(height: 20),
@@ -101,7 +117,9 @@ class _VerificationPageState extends State<VerificationPage> {
               ],
             ),
             const SizedBox(height: 10),
-            Divider(color: context.theme.blueColor!.withOpacity(0.2),),
+            Divider(
+              color: context.theme.blueColor!.withOpacity(0.2),
+            ),
             Row(
               children: [
                 Icon(

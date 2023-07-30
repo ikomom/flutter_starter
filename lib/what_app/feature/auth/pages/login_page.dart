@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_starter/what_app/common/routes/routes.dart';
 import 'package:flutter_starter/what_app/common/widgets/custom_icon_button.dart';
 import 'package:flutter_starter/what_app/common/extension/custom_theme_extension.dart';
 import 'package:flutter_starter/what_app/common/helper/show_alert_dialog.dart';
@@ -64,6 +65,7 @@ class _LoginPageState extends State<LoginPage> {
   sendCodeToPhone(BuildContext context) {
     final phone = phoneNumberController.text;
     final name = countryNameController.text;
+    final code = countryCodeController.text;
     if (phone.isEmpty) {
       return showAlertDialog(context: context, message: 'Please enter your phone number');
     }
@@ -73,6 +75,15 @@ class _LoginPageState extends State<LoginPage> {
           message:
               "The phone number your entered is too short for the country: $name.\n\nInclude your area code if yoe haven't");
     }
+    Routes.push(
+      context,
+      Routes.verification,
+      predicate: (context) => true,
+      arguments: {
+        "verificationId": phone,
+        "phoneNumber": code,
+      },
+    );
   }
 
   @override
