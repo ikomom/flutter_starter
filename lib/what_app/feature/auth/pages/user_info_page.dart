@@ -25,11 +25,11 @@ class _UserInfoPageState extends State<UserInfoPage> {
   File? imageCamera;
   Uint8List? imageGallery;
 
-  bool get imageNoExisit {
+  bool get imageNoExist {
     return imageCamera == null && imageGallery == null;
   }
 
-  imagePickerTypeBottomSheet(BuildContext context) {
+  imagePickerTypeBottomSheet() {
     return showModalBottomSheet(
       context: context,
       builder: (ctx) {
@@ -58,13 +58,13 @@ class _UserInfoPageState extends State<UserInfoPage> {
               children: [
                 const SizedBox(width: 20),
                 ImagePickerIcon(
-                  onTap: pickerImageByCamera,
+                  onTap: () => pickerImageByCamera(ImageSource.camera),
                   icon: Icons.camera_alt_outlined,
                   text: 'Camera',
                 ),
                 const SizedBox(width: 15),
                 ImagePickerIcon(
-                  onTap: pickerImageByGallery,
+                  onTap: () => pickerImageByCamera(ImageSource.gallery),
                   icon: Icons.photo_camera_back_rounded,
                   text: 'Gallery',
                 ),
@@ -87,10 +87,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
     });
   }
 
-  pickerImageByCamera() async {
+  pickerImageByCamera(ImageSource source) async {
     Routes.pop(context);
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      final image = await ImagePicker().pickImage(source: source);
       setState(() {
         imageCamera = File(image!.path);
         imageGallery = null;
@@ -129,17 +129,18 @@ class _UserInfoPageState extends State<UserInfoPage> {
             Text(
               'Please provide your name and an optional profile photo',
               style: TextStyle(color: context.theme.grayColor),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
             GestureDetector(
-              onTap: () => imagePickerTypeBottomSheet(context),
+              onTap: imagePickerTypeBottomSheet,
               child: Container(
                 padding: const EdgeInsets.all(26),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: context.theme.photoIconBgColor,
                   border: Border.all(
-                    color: imageNoExisit ? Colors.transparent : context.theme.grayColor!.withOpacity(.4),
+                    color: imageNoExist ? Colors.transparent : context.theme.grayColor!.withOpacity(.4),
                   ),
                   image: (imageCamera != null || imageGallery != null)
                       ? DecorationImage(
@@ -155,7 +156,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   child: Icon(
                     Icons.add_a_photo_rounded,
                     size: 48,
-                    color: imageNoExisit ? context.theme.photoIconColor : Colors.transparent,
+                    color: imageNoExist ? context.theme.photoIconColor : Colors.transparent,
                   ),
                 ),
               ),

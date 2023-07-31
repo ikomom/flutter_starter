@@ -15,7 +15,7 @@ ThemeData lightTheme() {
       titleTextStyle: TextStyle(fontSize: 18),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.dark,
-        statusBarColor: Colors.transparent,
+        statusBarColor: Colours.backgroundLight,
         systemNavigationBarColor: Colours.backgroundLight,
       ),
     ),
