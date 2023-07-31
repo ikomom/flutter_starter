@@ -10,16 +10,21 @@ class Routes {
   static const String verification = 'verification';
   static const String userInfo = 'userInfo';
 
-  static pop(BuildContext context) {
-    Navigator.of(context).pop();
+  static pop<T extends Object?>(BuildContext context, [T? result]) {
+    return Navigator.of(context).pop<T>(result);
   }
 
-  static push(BuildContext context, String name, {Map? arguments, RoutePredicate? predicate}) {
-    Navigator.of(context).pushNamedAndRemoveUntil(
+  static Future<T?> push<T extends Object?>(BuildContext context, String name,
+      {Map? arguments, RoutePredicate? predicate}) {
+    return Navigator.of(context).pushNamedAndRemoveUntil(
       name,
       predicate ?? (route) => false, // false 即移除所有之前的路由，包括当前路由。
       arguments: arguments,
     );
+  }
+
+  static Future<T?> pushBuilder<T extends Object?>(BuildContext context, Widget widget) {
+    return Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => widget));
   }
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {

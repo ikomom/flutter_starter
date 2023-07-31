@@ -13,8 +13,8 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     langBtnBgColor: const Color(0xFFF1F1F1),
     langBtnHighlightColor: const Color(0xFFE8E8ED),
     authAppBarTextColor: Colours.greenLight,
-    photoIconColor: const Color(0xFFF0F2F3),
-    photoIconBgColor: const Color(0xFF9DAAB3),
+    photoIconBgColor: const Color(0xFFF0F2F3),
+    photoIconColor: const Color(0xFF9DAAB3),
   );
   static var darkMode = CustomThemeExtension(
     circleImageColor: Colours.greenDark,

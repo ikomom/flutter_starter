@@ -7,7 +7,7 @@ import 'package:flutter_starter/what_app/common/helper/show_alert_dialog.dart';
 import 'package:flutter_starter/what_app/common/utils/colours.dart';
 import 'package:flutter_starter/what_app/common/widgets/custom_elevated_button.dart';
 import 'package:flutter_starter/what_app/feature/auth/controller/auth_controller.dart';
-import 'package:flutter_starter/what_app/feature/auth/widgets/custom_text_field.dart';
+import 'package:flutter_starter/what_app/common/widgets/custom_text_field.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});

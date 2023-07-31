@@ -5,7 +5,7 @@ import 'package:flutter_starter/what_app/common/routes/routes.dart';
 import 'package:flutter_starter/what_app/common/widgets/custom_icon_button.dart';
 import 'package:flutter_starter/what_app/common/extension/custom_theme_extension.dart';
 import 'package:flutter_starter/what_app/feature/auth/controller/auth_controller.dart';
-import 'package:flutter_starter/what_app/feature/auth/widgets/custom_text_field.dart';
+import 'package:flutter_starter/what_app/common/widgets/custom_text_field.dart';
 
 class VerificationPage extends ConsumerWidget {
   const VerificationPage({
