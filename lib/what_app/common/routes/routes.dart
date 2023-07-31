@@ -32,7 +32,7 @@ class Routes {
       case verification:
         final Map args = settings.arguments as Map;
         builder = (context) => VerificationPage(
-              verificationId: args['verificationId'],
+              smsCodeId: args['smsCodeId'],
               phoneNumber: args['phoneNumber'],
             );
       case userInfo:

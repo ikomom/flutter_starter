@@ -15,6 +15,8 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.fontSize,
     this.autoFocus,
+    this.maxLength,
+    this.counter,
   });
 
   final TextEditingController? controller;
@@ -28,6 +30,8 @@ class CustomTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final double? fontSize;
   final bool? autoFocus;
+  final int? maxLength;
+  final Widget? counter;
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +44,10 @@ class CustomTextField extends StatelessWidget {
       onChanged: onChanged,
       style: TextStyle(fontSize: fontSize),
       autofocus: autoFocus ?? false,
+      maxLength: maxLength,
       decoration: InputDecoration(
         isDense: true,
+        counter: counter,
         prefixText: prefixText,
         suffix: suffixIcon,
         hintText: hintText,

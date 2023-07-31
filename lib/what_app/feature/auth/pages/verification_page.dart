@@ -1,41 +1,33 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter/what_app/common/routes/routes.dart';
 import 'package:flutter_starter/what_app/common/widgets/custom_icon_button.dart';
 import 'package:flutter_starter/what_app/common/extension/custom_theme_extension.dart';
+import 'package:flutter_starter/what_app/feature/auth/controller/auth_controller.dart';
 import 'package:flutter_starter/what_app/feature/auth/widgets/custom_text_field.dart';
 
-class VerificationPage extends StatefulWidget {
+class VerificationPage extends ConsumerWidget {
   const VerificationPage({
     super.key,
-    required this.verificationId,
+    required this.smsCodeId,
     required this.phoneNumber,
   });
 
-  final String verificationId;
+  final String smsCodeId;
   final String phoneNumber;
 
-  @override
-  State<VerificationPage> createState() => _VerificationPageState();
-}
-
-class _VerificationPageState extends State<VerificationPage> {
-  late TextEditingController codeController;
-
-  @override
-  void initState() {
-    codeController = TextEditingController();
-    super.initState();
+  void verifySmsCode(BuildContext context, WidgetRef ref, String smsCode) {
+    ref.read(authControllerProvider).verifySmsCode(
+          context: context,
+          smsCodeId: smsCodeId,
+          smsCode: smsCode,
+          mounted: true,
+        );
   }
 
   @override
-  void dispose() {
-    codeController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -66,7 +58,8 @@ class _VerificationPageState extends State<VerificationPage> {
                   style: TextStyle(color: context.theme.grayColor, height: 1.5),
                   children: [
                     const TextSpan(
-                      text: "You've tried to register +25092323321. before requesting an SMS or call with your code\n",
+                      text:
+                          "You've tried to register +8618906057366. before requesting an SMS or call with your code\n",
                     ),
                     TextSpan(
                         text: 'Wrong number?',
@@ -86,13 +79,14 @@ class _VerificationPageState extends State<VerificationPage> {
               padding: const EdgeInsets.symmetric(horizontal: 80),
               child: CustomTextField(
                 hintText: '- - -  - - -',
-                controller: codeController,
+                maxLength: 6,
+                counter: Container(),
                 fontSize: 30,
                 autoFocus: true,
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   if (value.length == 6) {
-                    Routes.push(context, Routes.userInfo);
+                    return verifySmsCode(context, ref, value);
                   }
                 },
               ),
