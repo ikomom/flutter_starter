@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter/what_app/common/models/user_model.dart';
 import 'package:flutter_starter/what_app/feature/auth/respository/auth_repository.dart';
 
 final authControllerProvider = Provider((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return AuthController(authRepository: authRepository, ref: ref);
+});
+
+final userInfoAuthProvider = FutureProvider((ref) {
+  final authController = ref.watch(authControllerProvider);
+  return authController.getCurrentUserInfo();
 });
 
 class AuthController {
@@ -27,7 +33,9 @@ class AuthController {
       mounted: mounted,
     );
   }
-
+  Future<UserModel?> getCurrentUserInfo() async {
+    return authRepository.getCurrentUserInfo();
+  }
   void verifySmsCode({
     required BuildContext context,
     required String smsCodeId,

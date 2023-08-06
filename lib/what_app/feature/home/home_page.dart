@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         title: Text(
-          'Enter your phone number',
+          'Home page',
           style: TextStyle(
             color: context.theme.authAppBarTextColor,
           ),

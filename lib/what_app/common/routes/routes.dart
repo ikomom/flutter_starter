@@ -31,6 +31,7 @@ class Routes {
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     WidgetBuilder builder;
+    final Map args = settings.arguments as Map;
     switch (settings.name) {
       case welcome:
         builder = (context) => const WelComePage();
