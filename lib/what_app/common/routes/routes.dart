@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_starter/what_app/common/models/user_model.dart';
 import 'package:flutter_starter/what_app/feature/auth/pages/login_page.dart';
 import 'package:flutter_starter/what_app/feature/auth/pages/user_info_page.dart';
 import 'package:flutter_starter/what_app/feature/auth/pages/verification_page.dart';
-import 'package:flutter_starter/what_app/feature/home/home_page.dart';
+import 'package:flutter_starter/what_app/feature/chat/pages/chat_page.dart';
+import 'package:flutter_starter/what_app/feature/contact/pages/contact_page.dart';
+import 'package:flutter_starter/what_app/feature/home/pages/home_page.dart';
 import 'package:flutter_starter/what_app/feature/welcome/pages/welcome_page.dart';
 
 class Routes {
@@ -11,6 +14,8 @@ class Routes {
   static const String verification = 'verification';
   static const String userInfo = 'userInfo';
   static const String home = 'home';
+  static const String contact = 'contact';
+  static const String chat = 'chat';
 
   static pop<T extends Object?>(BuildContext context, [T? result]) {
     return Navigator.of(context).pop<T>(result);
@@ -31,7 +36,6 @@ class Routes {
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     WidgetBuilder builder;
-    final Map args = settings.arguments as Map;
     switch (settings.name) {
       case welcome:
         builder = (context) => const WelComePage();
@@ -47,6 +51,13 @@ class Routes {
         builder = (context) => const UserInfoPage();
       case home:
         builder = (context) => const HomePage();
+      case contact:
+        builder = (context) => const ContactPage();
+      case chat:
+        final UserModel user = settings.arguments as UserModel;
+        builder = (context) => ChatPage(
+              user: user,
+            );
       default:
         builder = (context) => const Scaffold(
               body: Center(

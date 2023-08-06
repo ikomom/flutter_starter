@@ -49,5 +49,14 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<!--permit-->
+		<key>NSContactsUsageDescription</key>
+		<string>Reason we need access to the contact list</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>sms</string>
+			<string>tel</string>
+		</array>
+
 	</dict>
 </plist>

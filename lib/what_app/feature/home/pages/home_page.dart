@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_starter/what_app/common/extension/custom_theme_extension.dart';
 import 'package:flutter_starter/what_app/common/widgets/custom_icon_button.dart';
-import 'package:flutter_starter/what_app/feature/home/call_home_page.dart';
-import 'package:flutter_starter/what_app/feature/home/chat_home_page.dart';
-import 'package:flutter_starter/what_app/feature/home/status_home_page.dart';
+import 'package:flutter_starter/what_app/feature/home/pages/call_home_page.dart';
+import 'package:flutter_starter/what_app/feature/home/pages/chat_home_page.dart';
+import 'package:flutter_starter/what_app/feature/home/pages/status_home_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

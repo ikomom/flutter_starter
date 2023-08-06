@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 class UserModel {
   final String username;
   final String uid;
   final String profileImageUrl;
+  final Uint8List? profileImage;
   final bool active;
   final int lastSeen;
   final String phoneNumber;
@@ -11,6 +14,7 @@ class UserModel {
     required this.username,
     required this.uid,
     required this.profileImageUrl,
+    this.profileImage,
     required this.active,
     required this.lastSeen,
     required this.phoneNumber,
