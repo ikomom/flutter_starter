@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_starter/what_app/feature/auth/pages/login_page.dart';
 import 'package:flutter_starter/what_app/feature/auth/pages/user_info_page.dart';
 import 'package:flutter_starter/what_app/feature/auth/pages/verification_page.dart';
+import 'package:flutter_starter/what_app/feature/home/home_page.dart';
 import 'package:flutter_starter/what_app/feature/welcome/pages/welcome_page.dart';
 
 class Routes {
@@ -9,6 +10,7 @@ class Routes {
   static const String login = 'login';
   static const String verification = 'verification';
   static const String userInfo = 'userInfo';
+  static const String home = 'home';
 
   static pop<T extends Object?>(BuildContext context, [T? result]) {
     return Navigator.of(context).pop<T>(result);
@@ -42,6 +44,8 @@ class Routes {
             );
       case userInfo:
         builder = (context) => const UserInfoPage();
+      case home:
+        builder = (context) => const HomePage();
       default:
         builder = (context) => const Scaffold(
               body: Center(

@@ -2,31 +2,51 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter/what_app/common/helper/show_alert_dialog.dart';
+import 'package:flutter_starter/what_app/common/repository/firebase_storage_repository.dart';
 import 'package:flutter_starter/what_app/common/routes/routes.dart';
 import 'package:flutter_starter/what_app/common/widgets/custom_elevated_button.dart';
 import 'package:flutter_starter/what_app/common/widgets/custom_icon_button.dart';
 import 'package:flutter_starter/what_app/common/extension/custom_theme_extension.dart';
 import 'package:flutter_starter/what_app/common/widgets/short_h_bar.dart';
+import 'package:flutter_starter/what_app/feature/auth/controller/auth_controller.dart';
 import 'package:flutter_starter/what_app/feature/auth/pages/image_picker_page.dart';
 import 'package:flutter_starter/what_app/common/widgets/custom_text_field.dart';
 import 'package:flutter_starter/what_app/feature/auth/widgets/image_picker_icon.dart';
 import 'package:image_picker/image_picker.dart';
 
-
-class UserInfoPage extends StatefulWidget {
+class UserInfoPage extends ConsumerStatefulWidget {
   const UserInfoPage({super.key});
 
   @override
-  State<UserInfoPage> createState() => _UserInfoPageState();
+  ConsumerState<UserInfoPage> createState() => _UserInfoPageState();
 }
 
-class _UserInfoPageState extends State<UserInfoPage> {
+class _UserInfoPageState extends ConsumerState<UserInfoPage> {
+  late TextEditingController usernameController;
+
   File? imageCamera;
   Uint8List? imageGallery;
 
   bool get imageNoExist {
     return imageCamera == null && imageGallery == null;
+  }
+
+  saveUserDataToFirebase() {
+    String username = usernameController.text;
+
+    if (username.isEmpty) {
+      return showAlertDialog(context: context, message: 'Please provide a username');
+    } else if (username.length < 3 || username.length > 20) {
+      return showAlertDialog(context: context, message: 'a username length should be between 3-20');
+    }
+    ref.read(authControllerProvider).saveUserInfoToFireStore(
+          username: username,
+          profileImage: imageCamera ?? imageGallery ?? '',
+          context: context,
+          mounted: mounted,
+        );
   }
 
   imagePickerTypeBottomSheet() {
@@ -95,18 +115,28 @@ class _UserInfoPageState extends State<UserInfoPage> {
         imageCamera = File(image!.path);
         imageGallery = null;
       });
-    } catch(e) {
+    } catch (e) {
       showAlertDialog(context: context, message: e.toString());
     }
+  }
+
+  @override
+  void initState() {
+    usernameController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .scaffoldBackgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -144,11 +174,11 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   ),
                   image: (imageCamera != null || imageGallery != null)
                       ? DecorationImage(
-                    fit: BoxFit.cover,
-                    image: imageGallery != null
-                        ? MemoryImage(imageGallery!) as ImageProvider
-                        : FileImage(imageCamera!),
-                  )
+                          fit: BoxFit.cover,
+                          image: imageGallery != null
+                              ? MemoryImage(imageGallery!) as ImageProvider
+                              : FileImage(imageCamera!),
+                        )
                       : null,
                 ),
                 child: Padding(
@@ -166,8 +196,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: CustomTextField(
+                      controller: usernameController,
                       hintText: 'Type your name hear',
                       textAlign: TextAlign.left,
                       autoFocus: true,
@@ -186,7 +217,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomElevatedButton(
-        onPressed: () {},
+        onPressed: saveUserDataToFirebase,
         text: 'NEXT',
         buttonWidth: 90,
       ),

@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter/what_app/common/helper/show_alert_dialog.dart';
+import 'package:flutter_starter/what_app/common/models/user_model.dart';
+import 'package:flutter_starter/what_app/common/repository/firebase_storage_repository.dart';
 import 'package:flutter_starter/what_app/common/routes/routes.dart';
 
 final authRepositoryProvider = Provider((ref) {
@@ -19,6 +21,37 @@ class AuthRepository {
 
   AuthRepository({required this.auth, required this.firestore});
 
+  void saveUserInfoToFireStore({
+    required String username,
+    required var profileImage,
+    required ProviderRef ref,
+    required BuildContext context,
+    required bool mounted,
+  }) async {
+    try {
+      String uid = auth.currentUser!.uid;
+      String profileImageUrl = '';
+      profileImageUrl =
+          await ref.read(firebaseStorageRepositoryProvider).storeFileToFirebase('profileImage/$uid', profileImage);
+
+      UserModel user = UserModel(
+        username: username,
+        uid: uid,
+        profileImageUrl: profileImageUrl,
+        active: true,
+        lastSeen: DateTime.april,
+        phoneNumber: auth.currentUser!.phoneNumber!,
+        groupId: [],
+      );
+      await firestore.collection('users').doc(uid).set(user.toMap());
+
+      if (!mounted) return;
+      Routes.push(context, Routes.home);
+    } catch (e) {
+      showAlertDialog(context: context, message: e.toString());
+    }
+  }
+
   void verifySmsCode({
     required BuildContext context,
     required String smsCodeId,
@@ -31,7 +64,7 @@ class AuthRepository {
         smsCode: smsCode,
       );
       await auth.signInWithCredential(credential);
-      if(!mounted) return;
+      if (!mounted) return;
       Routes.push(context, Routes.userInfo);
     } on FirebaseAuthException catch (e) {
       showAlertDialog(context: context, message: e.toString());
